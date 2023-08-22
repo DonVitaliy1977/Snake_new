@@ -1,4 +1,7 @@
-# Example file showing a basic pygame "game loop"
+'''
+Example file showing a basic pygame game loop
+'''
+
 import random
 
 import pygame
