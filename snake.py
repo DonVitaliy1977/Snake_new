@@ -7,9 +7,9 @@ from constans import SQUARE_WIDTH, SQUARE_HEIGHT
 
 
 class Snake:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self, koord_x, koord_y):
+        self.x = koord_x
+        self.y = koord_y
         self.head = pg.Rect(self.x, self.y, SQUARE_WIDTH - 1, SQUARE_HEIGHT - 1)
         self.tail = []
         self.alive = True
@@ -60,4 +60,3 @@ class Snake:
                 self.tail[inx] = {"x": self.x, "y": self.y}
             else:
                 self.tail[inx] = self.tail[inx + 1]
-

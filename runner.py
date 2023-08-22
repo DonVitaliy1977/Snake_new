@@ -1,14 +1,22 @@
-'''
+"""
 Example file showing a basic pygame game loop
-'''
+"""
 
 import random
 
 import pygame
 
 from apple import Apple
-from constans import (HEIGHT, NUM_X, NUM_Y, SQUARE_HEIGHT, SQUARE_WIDTH,
-                      START_SNAKE_X, START_SNAKE_Y, WIDTH)
+from constans import (
+    HEIGHT,
+    NUM_X,
+    NUM_Y,
+    SQUARE_HEIGHT,
+    SQUARE_WIDTH,
+    START_SNAKE_X,
+    START_SNAKE_Y,
+    WIDTH,
+)
 from snake import Snake
 from snake_collision import wall_collision
 
@@ -58,7 +66,6 @@ while running and snake.alive:
             for item in snake.tail:
                 print(item, ran_x, ran_y)
                 if item == {"x": ran_x, "y": ran_y}:
-                    print("!!!!!!!!!!!!!")
                     generate = True
         apple = Apple(ran_x, ran_y)
 

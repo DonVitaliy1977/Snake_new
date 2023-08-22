@@ -3,7 +3,7 @@ from constans import SQUARE_WIDTH, SQUARE_HEIGHT
 
 
 class Square:
-    def __init__(self,x,y):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
         self.color: str = "green"
