@@ -45,6 +45,18 @@ def manage_keyboard(snake: Snake):
                 snake.vector = "RIGHT"
 
 
+def speed_game(snake: Snake, snake_speed_limit = 40):
+    if len(snake.tail) == 4:
+        snake_speed_limit = 30
+    elif len(snake.tail) == 9:
+        snake_speed_limit = 20
+    elif len(snake.tail) == 19:
+        snake_speed_limit = 15
+    elif len(snake.tail) > 28:
+        snake_speed_limit = 10
+    return snake_speed_limit
+
+
 def game():
     global running
     screen, clock = game_setup()
@@ -72,17 +84,11 @@ def game():
                         generate = True
             apple = Apple((ran_x, ran_y))
 
+
         if snake_speed > snake_speed_limit:
             snake.move()
             running = wall_collision(snake)
-            if len(snake.tail) == 4:
-                snake_speed_limit = 30
-            elif len(snake.tail) == 9:
-                snake_speed_limit = 20
-            elif len(snake.tail) == 19:
-                snake_speed_limit = 15
-            elif len(snake.tail) > 28:
-                snake_speed_limit = 10
+            speed_game(snake, snake_speed_limit)
             snake_speed = 0
 
     # fill the screen with a color to wipe away anything from last frame
