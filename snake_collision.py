@@ -1,7 +1,6 @@
-from snake import Snake
 from apple import Apple
-
-from constants import WIDTH, HEIGHT
+from constants import HEIGHT, WIDTH
+from snake import Snake
 
 
 def wall_collision(snake: Snake) -> bool:

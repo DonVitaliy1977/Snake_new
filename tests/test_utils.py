@@ -1,4 +1,4 @@
-import pytest
+
 
 from constants import SQUARE_HEIGHT, SQUARE_WIDTH
 from utils import generate_position
@@ -9,8 +9,6 @@ def random_choice(a):
 
 
 def test_generate_position(mocker):
-    mocker.patch('random.choice', random_choice)
+    mocker.patch("random.choice", random_choice)
     result = generate_position()
-    assert result == (random_choice(1)*SQUARE_WIDTH,random_choice(1)*SQUARE_HEIGHT)
-
-
+    assert result == (random_choice(1) * SQUARE_WIDTH, random_choice(1) * SQUARE_HEIGHT)

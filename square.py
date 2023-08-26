@@ -1,5 +1,6 @@
 import pygame as pg
-from constants import SQUARE_WIDTH, SQUARE_HEIGHT
+
+from constants import SQUARE_HEIGHT, SQUARE_WIDTH
 
 
 class Square:

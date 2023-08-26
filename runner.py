@@ -6,16 +6,10 @@ Example file showing a basic pygame game loop
 import pygame
 
 from apple import Apple
-from constants import (
-    HEIGHT,
-    START_SNAKE_X,
-    START_SNAKE_Y,
-    WIDTH,
-)
+from constants import HEIGHT, START_SNAKE_X, START_SNAKE_Y, WIDTH
 from snake import Snake
-from snake_collision import wall_collision, apple_collision
+from snake_collision import apple_collision, wall_collision
 from utils import generate_position
-
 
 running = True
 
@@ -45,7 +39,7 @@ def manage_keyboard(snake: Snake):
                 snake.vector = "RIGHT"
 
 
-def speed_game(snake: Snake, snake_speed_limit = 40):
+def speed_game(snake: Snake, snake_speed_limit=40):
     if len(snake.tail) == 4:
         snake_speed_limit = 30
     elif len(snake.tail) == 9:
@@ -62,17 +56,16 @@ def game():
     screen, clock = game_setup()
     snake = Snake((START_SNAKE_X, START_SNAKE_Y))
 
-    apple = Apple(generate_position()) # (SQUARE_WIDTH * random.choice(range(NUM_X)),SQUARE_HEIGHT * random.choice(range(NUM_Y)))
+    apple = Apple(generate_position())
+
     snake_speed = 0
     snake_speed_limit = 40
 
     while running and snake.alive:
-        # poll for events
-        # pygame.QUIT event means the user clicked X to close your window
         manage_keyboard(snake)
 
         snake_speed += 1
-        if apple_collision(snake, apple):#snake.x == apple.x and snake.y == apple.y:
+        if apple_collision(snake, apple):  # snake.x == apple.x and snake.y == apple.y:
             snake.tail.append({"x": snake.x, "y": snake.y})
             generate = True
             ran_x, ran_y = None, None
@@ -84,19 +77,16 @@ def game():
                         generate = True
             apple = Apple((ran_x, ran_y))
 
-
         if snake_speed > snake_speed_limit:
             snake.move()
             running = wall_collision(snake)
             speed_game(snake, snake_speed_limit)
             snake_speed = 0
 
-    # fill the screen with a color to wipe away anything from last frame
         screen.fill("purple")
 
         snake.draw(screen)
         apple.draw(screen)
-    # flip() the display to put your work on screen
         pygame.display.flip()
 
         clock.tick(60)  # limits FPS to 60
