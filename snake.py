@@ -3,13 +3,13 @@ This module is for Snake template class
 """
 
 import pygame as pg
-from constans import SQUARE_WIDTH, SQUARE_HEIGHT
+from constants import SQUARE_WIDTH, SQUARE_HEIGHT
 
 
 class Snake:
-    def __init__(self, koord_x, koord_y):
-        self.x = koord_x
-        self.y = koord_y
+    def __init__(self, koord):
+        self.x = koord[0]
+        self.y = koord[1]
         self.head = pg.Rect(self.x, self.y, SQUARE_WIDTH - 1, SQUARE_HEIGHT - 1)
         self.tail = []
         self.alive = True
@@ -31,7 +31,7 @@ class Snake:
                 )
 
     def _collision_myself(self):
-        for item in self.tail[1:]:
+        for item in self.tail:
             if item["x"] == self.x and item["y"] == self.y:
                 self.alive = False
                 break

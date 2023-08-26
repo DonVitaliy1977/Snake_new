@@ -7,7 +7,7 @@ import random
 import pygame
 
 from apple import Apple
-from constans import (
+from constants import (
     HEIGHT,
     NUM_X,
     NUM_Y,
@@ -18,7 +18,8 @@ from constans import (
     WIDTH,
 )
 from snake import Snake
-from snake_collision import wall_collision
+from snake_collision import wall_collision, apple_collision
+from utils import generate_position
 
 # pygame setup
 pygame.init()
@@ -28,11 +29,9 @@ pygame.display.set_caption("Snake")
 clock = pygame.time.Clock()
 running = True
 
-snake = Snake(START_SNAKE_X, START_SNAKE_Y)
-apple = Apple(
-    SQUARE_WIDTH * random.choice(range(NUM_X)),
-    SQUARE_HEIGHT * random.choice(range(NUM_Y)),
-)
+snake = Snake((START_SNAKE_X, START_SNAKE_Y))
+
+apple = Apple(generate_position()) # (SQUARE_WIDTH * random.choice(range(NUM_X)),SQUARE_HEIGHT * random.choice(range(NUM_Y)))
 snake_speed = 0
 # snake_vector = pygame.K_RIGHT
 snake_speed_limit = 40
@@ -54,24 +53,21 @@ while running and snake.alive:
                 snake.vector = "RIGHT"
 
     snake_speed += 1
-    if snake.x == apple.x and snake.y == apple.y:
+    if apple_collision(snake, apple):#snake.x == apple.x and snake.y == apple.y:
         snake.tail.append({"x": snake.x, "y": snake.y})
         generate = True
         ran_x, ran_y = None, None
         while generate:
             generate = False
-            ran_x, ran_y = SQUARE_WIDTH * random.choice(
-                range(NUM_X)
-            ), SQUARE_HEIGHT * random.choice(range(NUM_Y))
+            ran_x, ran_y = generate_position()
             for item in snake.tail:
-                print(item, ran_x, ran_y)
                 if item == {"x": ran_x, "y": ran_y}:
                     generate = True
-        apple = Apple(ran_x, ran_y)
+        apple = Apple((ran_x, ran_y))
 
     if snake_speed > snake_speed_limit:
         snake.move()
-        wall_collision(snake)
+        running = wall_collision(snake)
         if len(snake.tail) == 4:
             snake_speed_limit = 30
         elif len(snake.tail) == 9:
