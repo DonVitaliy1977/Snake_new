@@ -7,11 +7,11 @@ from constants import SQUARE_WIDTH, SQUARE_HEIGHT
 
 
 class Snake:
-    def __init__(self, koord):
+    def __init__(self, koord, tail=[]):
         self.x = koord[0]
         self.y = koord[1]
         self.head = pg.Rect(self.x, self.y, SQUARE_WIDTH - 1, SQUARE_HEIGHT - 1)
-        self.tail = []
+        self.tail = tail
         self.alive = True
         self.vector = "RIGHT"
 
@@ -30,11 +30,13 @@ class Snake:
                     ),
                 )
 
-    def _collision_myself(self):
+    def _collision_myself(self) -> bool:
         for item in self.tail:
             if item["x"] == self.x and item["y"] == self.y:
-                self.alive = False
-                break
+                return False
+                # self.alive = False
+                # break
+        return True
 
     def move(self):
         if len(self.tail) > 0:
@@ -51,7 +53,7 @@ class Snake:
 
         if self.vector == "RIGHT":
             self.x += SQUARE_WIDTH
-        self._collision_myself()
+        self.alive = self._collision_myself()
         self.head = pg.Rect(self.x, self.y, SQUARE_WIDTH - 1, SQUARE_HEIGHT - 1)
 
     def rewrite_tail(self):

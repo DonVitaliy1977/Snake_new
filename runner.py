@@ -2,17 +2,12 @@
 Example file showing a basic pygame game loop
 """
 
-import random
 
 import pygame
 
 from apple import Apple
 from constants import (
     HEIGHT,
-    NUM_X,
-    NUM_Y,
-    SQUARE_HEIGHT,
-    SQUARE_WIDTH,
     START_SNAKE_X,
     START_SNAKE_Y,
     WIDTH,
@@ -21,24 +16,21 @@ from snake import Snake
 from snake_collision import wall_collision, apple_collision
 from utils import generate_position
 
-# pygame setup
-pygame.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-pygame.display.set_caption("Snake")
-clock = pygame.time.Clock()
 running = True
 
-snake = Snake((START_SNAKE_X, START_SNAKE_Y))
 
-apple = Apple(generate_position()) # (SQUARE_WIDTH * random.choice(range(NUM_X)),SQUARE_HEIGHT * random.choice(range(NUM_Y)))
-snake_speed = 0
-# snake_vector = pygame.K_RIGHT
-snake_speed_limit = 40
+def game_setup():
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-while running and snake.alive:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
+    pygame.display.set_caption("Snake")
+    clock = pygame.time.Clock()
+    return screen, clock
+
+
+def manage_keyboard(snake: Snake):
+    global running
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -52,41 +44,57 @@ while running and snake.alive:
             if event.key == pygame.K_RIGHT and snake.vector != "LEFT":
                 snake.vector = "RIGHT"
 
-    snake_speed += 1
-    if apple_collision(snake, apple):#snake.x == apple.x and snake.y == apple.y:
-        snake.tail.append({"x": snake.x, "y": snake.y})
-        generate = True
-        ran_x, ran_y = None, None
-        while generate:
-            generate = False
-            ran_x, ran_y = generate_position()
-            for item in snake.tail:
-                if item == {"x": ran_x, "y": ran_y}:
-                    generate = True
-        apple = Apple((ran_x, ran_y))
 
-    if snake_speed > snake_speed_limit:
-        snake.move()
-        running = wall_collision(snake)
-        if len(snake.tail) == 4:
-            snake_speed_limit = 30
-        elif len(snake.tail) == 9:
-            snake_speed_limit = 20
-        elif len(snake.tail) == 19:
-            snake_speed_limit = 15
-        elif len(snake.tail) > 28:
-            snake_speed_limit = 10
-        snake_speed = 0
+def game():
+    global running
+    screen, clock = game_setup()
+    snake = Snake((START_SNAKE_X, START_SNAKE_Y))
+
+    apple = Apple(generate_position()) # (SQUARE_WIDTH * random.choice(range(NUM_X)),SQUARE_HEIGHT * random.choice(range(NUM_Y)))
+    snake_speed = 0
+    snake_speed_limit = 40
+
+    while running and snake.alive:
+        # poll for events
+        # pygame.QUIT event means the user clicked X to close your window
+        manage_keyboard(snake)
+
+        snake_speed += 1
+        if apple_collision(snake, apple):#snake.x == apple.x and snake.y == apple.y:
+            snake.tail.append({"x": snake.x, "y": snake.y})
+            generate = True
+            ran_x, ran_y = None, None
+            while generate:
+                generate = False
+                ran_x, ran_y = generate_position()
+                for item in snake.tail:
+                    if item == {"x": ran_x, "y": ran_y}:
+                        generate = True
+            apple = Apple((ran_x, ran_y))
+
+        if snake_speed > snake_speed_limit:
+            snake.move()
+            running = wall_collision(snake)
+            if len(snake.tail) == 4:
+                snake_speed_limit = 30
+            elif len(snake.tail) == 9:
+                snake_speed_limit = 20
+            elif len(snake.tail) == 19:
+                snake_speed_limit = 15
+            elif len(snake.tail) > 28:
+                snake_speed_limit = 10
+            snake_speed = 0
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("purple")
+        screen.fill("purple")
 
-    snake.draw(screen)
-    apple.draw(screen)
+        snake.draw(screen)
+        apple.draw(screen)
     # flip() the display to put your work on screen
-    pygame.display.flip()
+        pygame.display.flip()
 
-    clock.tick(60)  # limits FPS to 60
+        clock.tick(60)  # limits FPS to 60
 
 
+game()
 pygame.quit()
