@@ -20,5 +20,5 @@ jobs:
         pip install pytest
 
     - name: All test
-      run: |
+      run: |pip freeze > requirements.txt
         pytest $(git ls-files '*.py')
