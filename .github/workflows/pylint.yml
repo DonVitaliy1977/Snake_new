@@ -21,4 +21,4 @@ jobs:
 
     - name: All test
       run: |
-        pytest $(git ls-files '*.py')
+        pytest .
